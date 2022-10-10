@@ -5,5 +5,5 @@ exports.getTopics = (req, res) => {
         console.log("in the controller")
         console.log(topics)
         res.send({topics})
-    })
+    }).catch(err => next(err))
 }
