@@ -18,4 +18,21 @@ describe('3. get /api/topics', () => {
         .get("/api/topics")
         .expect(200)
     });
+    test('should return the topics list with a slug and description for each', () => {
+        return request(app)
+        .get("/api/topics")
+        .expect(200)
+        .then(({body}) => {
+            expect(body.topics).toBeInstanceOf(Array)
+            expect(body.topics).toHaveLength(3)
+            body.topics.forEach(topic => {
+                expect(topic).toEqual(
+                    expect.objectContaining({
+                        slug: expect.any(String),
+                        description: expect.any(String)
+                    })
+                )
+            })
+        })
+    });
 });
