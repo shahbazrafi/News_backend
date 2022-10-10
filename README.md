@@ -7,3 +7,4 @@ PGDATABASE=nc_news_test
 ```
 PGDATABASE=nc_news
 ```
+These two files should stay gitignored by adding them to the .gitignore file
