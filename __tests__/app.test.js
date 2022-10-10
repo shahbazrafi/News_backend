@@ -36,3 +36,11 @@ describe('3. get /api/topics', () => {
         })
     });
 });
+
+describe('4. get /api/articles/:article_id', () => {
+    test('returns 200 status', () => {
+        return request(app)
+        .get("/api/articles/1")
+        .expect(200)
+    });
+})
