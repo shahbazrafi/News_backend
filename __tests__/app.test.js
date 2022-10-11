@@ -43,4 +43,26 @@ describe('4. get /api/articles/:article_id', () => {
         .get("/api/articles/1")
         .expect(200)
     });
+    test('returns 200 status', () => {
+        return request(app)
+        .get("/api/articles/1")
+        .expect(200)
+        .then(({body}) => {
+            expect(body.articles).toBeInstanceOf(Object)
+            expect(body.articles).toHaveLength(1)
+            body.articles.forEach(article => {
+                expect(article).toEqual(
+                    expect.objectContaining({
+                        author: expect.any(String),
+                        title: expect.any(String),
+                        article_id: expect.any(Number),
+                        body: expect.any(String),
+                        topic: expect.any(String),
+                        created_at: expect.any(Date),
+                        votes: expect.any(Number)
+                    })
+                )
+            })
+        })
+    });
 })
