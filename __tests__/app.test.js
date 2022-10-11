@@ -38,31 +38,28 @@ describe('3. get /api/topics', () => {
 });
 
 describe('4. get /api/articles/:article_id', () => {
-    test('returns 200 status', () => {
-        return request(app)
-        .get("/api/articles/1")
-        .expect(200)
-    });
-    test('returns 200 status', () => {
+    test('should return 200 and an object that matches the article_id for selected columns', () => {
         return request(app)
         .get("/api/articles/1")
         .expect(200)
         .then(({body}) => {
-            expect(body.articles).toBeInstanceOf(Object)
-            expect(body.articles).toHaveLength(1)
-            body.articles.forEach(article => {
-                expect(article).toEqual(
-                    expect.objectContaining({
-                        author: expect.any(String),
-                        title: expect.any(String),
-                        article_id: expect.any(Number),
-                        body: expect.any(String),
-                        topic: expect.any(String),
-                        created_at: expect.any(Date),
-                        votes: expect.any(Number)
-                    })
-                )
-            })
+            expect(body.articles).toEqual({
+                    author: "butter_bridge",
+                    title: "Living in the shadow of a great man",
+                    article_id: 1,
+                    body: "I find this existence challenging",
+                    topic: "mitch",
+                    created_at: "2020-07-09T20:11:00.000Z",
+                    votes: 100
+                })
+        })
+    });
+    test('should return 404 if article_id does not exist', () => {
+        return request(app)
+        .get("/api/articles/122")
+        .expect(404)
+        .then(({body}) => {
+            expect(body.message).toBe("no article_id found")
         })
     });
 })
