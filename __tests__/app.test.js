@@ -54,6 +54,14 @@ describe('4. get /api/articles/:article_id', () => {
                 })
         })
     });
+    test('should return 400 with invalid input', () => {
+        return request(app)
+        .get("/api/articles/banana")
+        .expect(400)
+        .then(({body}) => {
+            expect(body.message).toBe("bad request")
+        })
+    });
     test('should return 404 if article_id does not exist', () => {
         return request(app)
         .get("/api/articles/122")
