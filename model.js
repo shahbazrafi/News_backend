@@ -17,3 +17,8 @@ exports.selectArticleById = (article_id) => {
         }
     })
 }
+
+exports.selectUsers = () => {
+    return db.query("SELECT * FROM users")
+    .then(data => data.rows)
+}

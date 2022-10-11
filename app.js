@@ -5,6 +5,7 @@ const controller = require("./controller")
 
 app.get("/api/topics", controller.getTopics)
 app.get("/api/articles/:article_id", controller.getArticleById)
+app.get("/api/users", controller.getUsers)
 
 // app.use((err, req, res, next) => {
 //     if (err) {
