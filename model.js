@@ -22,3 +22,13 @@ exports.selectUsers = () => {
     return db.query("SELECT * FROM users")
     .then(data => data.rows)
 }
+
+exports.updateArticles = (article_id, data) => {
+    return db.query(`SELECT votes FROM articles WHERE article_id=$1`, [article_id])
+    .then(data => {
+        return data.rows[0]
+    }).then(({votes}) => {
+        votes+=data.inc_votes
+        return db.query(`UPDATE articles SET votes=$2 WHERE article_id=$1 RETURNING *`, [article_id, votes])
+    }).then(({rows}) => rows[0])
+}

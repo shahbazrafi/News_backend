@@ -83,7 +83,6 @@ describe('5. get /api/users', () => {
         .get("/api/users")
         .expect(200)
         .then(({body}) => {
-            console.log(body)
             expect(body.users).toBeInstanceOf(Array)
             expect(body.users).toHaveLength(4)
             body.users.forEach(user => {
@@ -95,6 +94,26 @@ describe('5. get /api/users', () => {
                     })
                 )
             })
+        })
+    });
+});
+
+describe('6', () => {
+    test('returns 200 and updated article', () => {
+        return request(app)
+        .patch("/api/articles/1")
+        .send({ inc_votes : 55})
+        .expect(200)
+        .then(({body}) => {
+            expect(body.article).toEqual({
+                article_id: 1,
+                title: 'Living in the shadow of a great man',
+                topic: 'mitch',
+                author: 'butter_bridge',
+                body: 'I find this existence challenging',
+                created_at: "2020-07-09T20:11:00.000Z",
+                votes: 155
+              })
         })
     });
 });
