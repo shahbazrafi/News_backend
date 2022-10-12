@@ -15,6 +15,6 @@ exports.getArticleById = (req, res, next) => {
 
 exports.getUsers = (req, res, next) => {
     return model.selectUsers().then(users => {
-        res.send({users})
+        res.status(200).send({users})
     }).catch(err => next(err))
 }
