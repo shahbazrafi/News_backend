@@ -37,7 +37,7 @@ describe('3. get /api/topics', () => {
     });
 });
 
-describe('4. get /api/articles/:article_id', () => {
+describe('4. get /api/articles/:article_id + 7. comment_count', () => {
     test('should return 200 and an object that matches the article_id for selected columns', () => {
         return request(app)
         .get("/api/articles/1")
@@ -50,7 +50,8 @@ describe('4. get /api/articles/:article_id', () => {
                     body: "I find this existence challenging",
                     topic: "mitch",
                     created_at: "2020-07-09T20:11:00.000Z",
-                    votes: 100
+                    votes: 100,
+                    comment_count: 11
                 })
         })
     });
