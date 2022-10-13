@@ -20,3 +20,9 @@ exports.getUsers = (req, res, next) => {
         res.status(200).send({users})
     }).catch(err => next(err))
 }
+
+exports.patchArticles = (req, res, next) => {
+    return model.updateArticles(req.params.article_id, req.body).then(article => {
+        res.send({article})
+    }).catch(err => next(err))
+}
