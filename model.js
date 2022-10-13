@@ -23,17 +23,16 @@ exports.selectUsers = () => {
     .then(data => data.rows)
 }
 
-exports.updateArticles = (article_id, data) => {
-    return db.query(`SELECT votes FROM articles WHERE article_id=$1`, [article_id])
-    .then(data => {
-        if (data.rows.length === 0){
+exports.updateArticles = (article_id, body) => {
+    if (body.inc_votes === undefined ) {
+        return Promise.reject({status: 400, message: "missing body error"})
+    }
+    return db.query(`UPDATE articles SET votes=votes+$2 WHERE article_id=$1 RETURNING *`, [article_id, body.inc_votes])
+    .then(({rows}) => {
+        if (rows.length === 0){
             return Promise.reject({status: 404, message: "no article_id found"})
         } else {
-            return data.rows[0]
+            return rows[0]
         }
-    }).then(({votes}) => {
-        return db.query(`UPDATE articles SET votes=$2+${data.inc_votes} WHERE article_id=$1 RETURNING *`, [article_id, votes])
-    }).then(({rows}) => {
-        return rows[0]
     })
 }

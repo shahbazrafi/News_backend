@@ -99,26 +99,19 @@ describe('5. get /api/users', () => {
 });
 
 describe('6', () => {
-    test('returns 200 and updated article', () => {
+    test('returns 400 missing body error', () => {
         return request(app)
         .patch("/api/articles/1")
-        .send({ inc_votes : 55})
-        .expect(200)
+        .send({ wrong_send : 55})
+        .expect(400)
         .then(({body}) => {
-            expect(body.article).toEqual({
-                article_id: 1,
-                title: 'Living in the shadow of a great man',
-                topic: 'mitch',
-                author: 'butter_bridge',
-                body: 'I find this existence challenging',
-                created_at: "2020-07-09T20:11:00.000Z",
-                votes: 155
-              })
+            expect(body.message).toBe("missing body error")
         })
     });
     test('should return 400 with invalid input', () => {
         return request(app)
         .patch("/api/articles/banana")
+        .send({ inc_votes : 55})
         .expect(400)
         .then(({body}) => {
             expect(body.message).toBe("bad request")
@@ -127,9 +120,28 @@ describe('6', () => {
     test('should return 404 if article_id does not exist', () => {
         return request(app)
         .patch("/api/articles/122")
+        .send({ inc_votes : 55})
         .expect(404)
         .then(({body}) => {
             expect(body.message).toBe("no article_id found")
+        })
+    });
+    test('returns 200 and updated article', () => {
+        return request(app)
+        .patch("/api/articles/1")
+        .send({ inc_votes : 55})
+        .expect(200)
+        .then(({body}) => {
+            expect(body.article).toEqual(
+                expect.objectContaining({
+                    article_id: expect.any(Number),
+                    title: expect.any(String),
+                    topic: expect.any(String),
+                    author: expect.any(String),
+                    body: expect.any(String),
+                    created_at: expect.any(String),
+                    votes: expect.any(Number)
+                }))
         })
     });
 });
