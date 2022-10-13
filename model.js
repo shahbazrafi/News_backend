@@ -26,9 +26,14 @@ exports.selectUsers = () => {
 exports.updateArticles = (article_id, data) => {
     return db.query(`SELECT votes FROM articles WHERE article_id=$1`, [article_id])
     .then(data => {
-        return data.rows[0]
+        if (data.rows.length === 0){
+            return Promise.reject({status: 404, message: "no article_id found"})
+        } else {
+            return data.rows[0]
+        }
     }).then(({votes}) => {
-        votes+=data.inc_votes
-        return db.query(`UPDATE articles SET votes=$2 WHERE article_id=$1 RETURNING *`, [article_id, votes])
-    }).then(({rows}) => rows[0])
+        return db.query(`UPDATE articles SET votes=$2+${data.inc_votes} WHERE article_id=$1 RETURNING *`, [article_id, votes])
+    }).then(({rows}) => {
+        return rows[0]
+    })
 }

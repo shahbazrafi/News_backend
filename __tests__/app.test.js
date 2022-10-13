@@ -116,4 +116,20 @@ describe('6', () => {
               })
         })
     });
+    test('should return 400 with invalid input', () => {
+        return request(app)
+        .patch("/api/articles/banana")
+        .expect(400)
+        .then(({body}) => {
+            expect(body.message).toBe("bad request")
+        })
+    });
+    test('should return 404 if article_id does not exist', () => {
+        return request(app)
+        .patch("/api/articles/122")
+        .expect(404)
+        .then(({body}) => {
+            expect(body.message).toBe("no article_id found")
+        })
+    });
 });
