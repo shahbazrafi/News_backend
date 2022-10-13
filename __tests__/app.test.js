@@ -145,3 +145,22 @@ describe('6', () => {
         })
     });
 });
+
+describe('8. get /api/articles/', () => {
+    test('should return 200 and articles sorted by date', () => {
+        return request(app)
+        .get("/api/articles/")
+        .expect(200)
+        .then(({body}) => {
+            expect(body.articles).toEqual({
+                    author: "butter_bridge",
+                    title: "Living in the shadow of a great man",
+                    article_id: 1,
+                    body: "I find this existence challenging",
+                    topic: "mitch",
+                    created_at: "2020-07-09T20:11:00.000Z",
+                    votes: 100
+                })
+        })
+    });
+})
