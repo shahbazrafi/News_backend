@@ -26,3 +26,9 @@ exports.patchArticles = (req, res, next) => {
         res.send({article})
     }).catch(err => next(err))
 }
+
+exports.deleteComment = (req, res, next) => {
+    return model.removeComment(req.params.comment_id).then(() => {
+        res.status(204).send()
+    }).catch(err => next(err))
+}

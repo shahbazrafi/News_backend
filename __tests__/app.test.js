@@ -146,3 +146,11 @@ describe('6', () => {
         })
     });
 });
+
+describe('12. DELETE /api/comments/:comment_id', () => {
+    test('returns 204', () => {
+        return request(app)
+        .delete("/api/comments/19")
+        .expect(204)
+    });
+});
