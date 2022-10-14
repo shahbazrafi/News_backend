@@ -26,3 +26,9 @@ exports.patchArticles = (req, res, next) => {
         res.send({article})
     }).catch(err => next(err))
 }
+
+exports.getCommentsByArticleId = (req, res, next) => {
+    return model.selectComments(req.params.article_id).then(comments => {
+        res.status(200).send({comments})
+    }).catch(err => next(err))
+}

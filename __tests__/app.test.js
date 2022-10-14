@@ -146,3 +146,43 @@ describe('6', () => {
         })
     });
 });
+
+describe('9. GET /api/articles/:article_id/comments', () => {
+    test('should return 200 and comments', () => {
+        return request(app)
+        .get("/api/articles/1/comments")
+        .expect(200)
+        .then(({body}) => {
+            expect(body.comments).toBeInstanceOf(Array)
+            expect(body.comments).toHaveLength(11)
+            body.comments.forEach(comment => {
+                expect(comment).toEqual(
+                    expect.objectContaining({
+                        comment_id: expect.any(Number),
+                        body: expect.any(String),
+                        article_id: 1,
+                        author: expect.any(String),
+                        votes: expect.any(Number),
+                        created_at: expect.any(String)
+                    })
+                )
+            })
+        })
+    });
+    test('should return 400 and bad request for invalid article id', () => {
+        return request(app)
+        .get("/api/articles/banana/comments")
+        .expect(400)
+        .then(({body}) => {
+            expect(body.message).toBe("bad request")
+        })
+    });
+    test('should return 404 if article has no comments', () => {
+        return request(app)
+        .get("/api/articles/10/comments")
+        .expect(404)
+        .then(({body}) => {
+            expect(body.message).toBe("no comments found")
+        })
+    });
+});
