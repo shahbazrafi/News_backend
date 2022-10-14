@@ -4,11 +4,11 @@ const app = express()
 const controller = require("./controller")
 app.use(express.json())
 
-app.get("/api/articles/:article_id/comments", controller.getCommentsByArticleId)
 app.get("/api/topics", controller.getTopics)
 app.get("/api/articles/:article_id", controller.getArticleById)
 app.get("/api/users", controller.getUsers)
 app.patch("/api/articles/:article_id", controller.patchArticles)
+app.get("/api/articles/:article_id/comments", controller.getCommentsByArticleId)
 
 app.use((err, req, res, next) => {
     if (err.code === "22P02") {
