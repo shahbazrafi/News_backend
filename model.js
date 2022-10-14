@@ -51,3 +51,18 @@ exports.selectComments = (article_id) => {
         }
     })
 }
+
+exports.insertComment = (article_id, comment) => {
+    if (!comment.username || !comment.body) {
+        return Promise.reject({status: 400, message: "invalid new comment"})
+    }
+    return db.query(`INSERT INTO comments (article_id, body, author) VALUES ($3, $1, $2) RETURNING *;`, [comment.body, comment.username, article_id])
+    .then((data) => {
+        return data.rows[0]
+    }).catch(err => {
+        if (err.code === "23503") {
+            return Promise.reject({status: 404, message: "article not found"})
+        }
+        else next(err)
+    })
+}

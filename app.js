@@ -9,6 +9,7 @@ app.get("/api/articles/:article_id", controller.getArticleById)
 app.get("/api/users", controller.getUsers)
 app.patch("/api/articles/:article_id", controller.patchArticles)
 app.get("/api/articles/:article_id/comments", controller.getCommentsByArticleId)
+app.post("/api/articles/:article_id/comments", controller.postCommentToArticleId)
 
 app.use((err, req, res, next) => {
     if (err.code === "22P02") {
