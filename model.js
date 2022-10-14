@@ -40,3 +40,27 @@ exports.updateArticles = (article_id, body) => {
         }
     })
 }
+
+exports.selectArticles = (topic) => {
+    let insert = "", array = []
+    if (topic) {
+        insert = "WHERE topic = $1"
+        array.push(topic)
+    }
+    return db.query(`SELECT * FROM articles ${insert} ORDER BY created_at DESC`, array)
+    .then(({rows}) => {
+        if (rows.length ===0){
+            return Promise.reject({status: 404, message: "no articles found"})
+        } else {
+            return Promise.all(rows.map((article) => {
+                return db.query(`SELECT * FROM comments WHERE article_id=$1`, [article.article_id])
+                .then(data => {
+                    article.comment_count=data.rows.length
+                })
+            }))
+            .then(() => {
+                return rows
+            })
+        }
+    })
+}
