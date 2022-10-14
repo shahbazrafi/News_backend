@@ -152,15 +152,20 @@ describe('6', () => {
 //         .get("/api/articles/")
 //         .expect(200)
 //         .then(({body}) => {
-//             expect(body.articles).toEqual({
-//                     author: "butter_bridge",
-//                     title: "Living in the shadow of a great man",
-//                     article_id: 1,
-//                     body: "I find this existence challenging",
-//                     topic: "mitch",
-//                     created_at: "2020-07-09T20:11:00.000Z",
-//                     votes: 100
-//                 })
+//             body.articles.forEach(article => {
+//                 expect(article).toEqual(
+//                     expect.objectContaining({
+//                         author: expect.any(String),
+//                         title: expect.any(String),
+//                         article_id: expect.any(Number),
+//                         body: expect.any(String),
+//                         topic: expect.any(String),
+//                         created_at: expect.any(String),
+//                         votes: expect.any(Number),
+//                         comment_count: expect.any(Number)
+//                     })
+//                 )
+//             })
 //         })
 //     });
 // })
