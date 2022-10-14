@@ -4,6 +4,7 @@ const app = express()
 const controller = require("./controller")
 app.use(express.json())
 
+app.get("/api", controller.getApi)
 app.get("/api/topics", controller.getTopics)
 app.get("/api/articles/:article_id", controller.getArticleById)
 app.get("/api/users", controller.getUsers)

@@ -1,4 +1,5 @@
 const model = require("./model")
+const endpoints = require("./endpoints.json");
 
 exports.getTopics = (req, res) => {
     return model.selectTopics().then(topics => {
@@ -25,4 +26,8 @@ exports.patchArticles = (req, res, next) => {
     return model.updateArticles(req.params.article_id, req.body).then(article => {
         res.send({article})
     }).catch(err => next(err))
+}
+
+exports.getApi = (req, res, next) => {
+    res.status(200).send(endpoints)
 }
