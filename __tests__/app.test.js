@@ -43,16 +43,16 @@ describe('4. get /api/articles/:article_id + 7. comment_count', () => {
         .get("/api/articles/1")
         .expect(200)
         .then(({body}) => {
-            expect(body.articles).toEqual({
-                    author: "butter_bridge",
-                    title: "Living in the shadow of a great man",
-                    article_id: 1,
-                    body: "I find this existence challenging",
-                    topic: "mitch",
-                    created_at: "2020-07-09T20:11:00.000Z",
-                    votes: 100,
-                    comment_count: 11
-                })
+            expect(body.articles).toEqual(
+                expect.objectContaining({
+                    article_id: expect.any(Number),
+                    title: expect.any(String),
+                    topic: expect.any(String),
+                    author: expect.any(String),
+                    body: expect.any(String),
+                    created_at: expect.any(String),
+                    votes: expect.any(Number)
+                }))
         })
     });
     test('should return 400 with invalid input', () => {
