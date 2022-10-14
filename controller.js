@@ -28,7 +28,7 @@ exports.patchArticles = (req, res, next) => {
 }
 
 exports.getArticle = (req, res, next) => {
-    return model.selectArticles(req.query.topic)
+    return model.selectArticles(req.query.topic, req.query.sort_by, req.query.order)
     .then(articles => {
         // console.log({articles})
         res.status(200).send({articles})
