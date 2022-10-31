@@ -1,6 +1,6 @@
 const express = require("express")
 const app = express()
-
+const cors = require('cors');
 const controller = require("./controller")
 app.use(express.json())
 
@@ -9,6 +9,7 @@ app.get("/api/articles/:article_id", controller.getArticleById)
 app.get("/api/users", controller.getUsers)
 app.patch("/api/articles/:article_id", controller.patchArticles)
 
+app.use(cors());
 app.use((err, req, res, next) => {
     if (err.code === "22P02") {
         res.status(400).send({message: "bad request"})
