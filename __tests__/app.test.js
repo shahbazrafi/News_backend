@@ -146,3 +146,56 @@ describe('6', () => {
         })
     });
 });
+
+describe('8. get /api/articles/', () => {
+    test('should return 200 and articles sorted by date', () => {
+        return request(app)
+        .get("/api/articles/")
+        .expect(200)
+        .then(({body}) => {
+            body.articles.forEach(article => {
+                expect(article).toEqual(
+                    expect.objectContaining({
+                        author: expect.any(String),
+                        title: expect.any(String),
+                        article_id: expect.any(Number),
+                        body: expect.any(String),
+                        topic: expect.any(String),
+                        created_at: expect.any(String),
+                        votes: expect.any(Number),
+                        comment_count: expect.any(Number)
+                    })
+                )
+            })
+        })
+    });
+    test('should return 200 and articles sorted by date and topic', () => {
+        return request(app)
+        .get("/api/articles/?topic=mitch")
+        .expect(200)
+        .then(({body}) => {
+            body.articles.forEach(article => {
+                expect(article).toEqual(
+                    expect.objectContaining({
+                        author: expect.any(String),
+                        title: expect.any(String),
+                        article_id: expect.any(Number),
+                        body: expect.any(String),
+                        topic: "mitch",
+                        created_at: expect.any(String),
+                        votes: expect.any(Number),
+                        comment_count: expect.any(Number)
+                    })
+                )
+            })
+        })
+    });
+    test('should return 200 and no articles with invalid topic', () => {
+        return request(app)
+        .get("/api/articles/?topic=banana")
+        .expect(200)
+        .then(({body}) => {
+            expect(body.articles.length).toBe(0)
+        })
+    });
+})

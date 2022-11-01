@@ -8,6 +8,8 @@ app.get("/api/topics", controller.getTopics)
 app.get("/api/articles/:article_id", controller.getArticleById)
 app.get("/api/users", controller.getUsers)
 app.patch("/api/articles/:article_id", controller.patchArticles)
+app.get("/api/articles/", controller.getArticle)
+
 
 app.use(cors());
 app.use((err, req, res, next) => {

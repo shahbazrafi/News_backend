@@ -26,3 +26,11 @@ exports.patchArticles = (req, res, next) => {
         res.send({article})
     }).catch(err => next(err))
 }
+
+exports.getArticle = (req, res, next) => {
+    return model.selectArticles(req.query.topic)
+    .then(articles => {
+        // console.log({articles})
+        res.status(200).send({articles})
+    }).catch(err => next(err))
+}
