@@ -177,12 +177,12 @@ describe('9. GET /api/articles/:article_id/comments', () => {
             expect(body.message).toBe("bad request")
         })
     });
-    test('should return 404 if article has no comments', () => {
+    test('should return 200 and 0 length if article has no comments', () => {
         return request(app)
         .get("/api/articles/10/comments")
-        .expect(404)
+        .expect(200)
         .then(({body}) => {
-            expect(body.message).toBe("no comments found")
+            expect(body.comments.length).toBe(0)
         })
     });
 });
