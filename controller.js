@@ -30,7 +30,12 @@ exports.patchArticles = (req, res, next) => {
 exports.getArticle = (req, res, next) => {
     return model.selectArticles(req.query.topic)
     .then(articles => {
-        // console.log({articles})
         res.status(200).send({articles})
+    }).catch(err => next(err))
+}
+
+exports.getCommentsByArticleId = (req, res, next) => {
+    return model.selectComments(req.params.article_id).then(comments => {
+        res.status(200).send({comments})
     }).catch(err => next(err))
 }
