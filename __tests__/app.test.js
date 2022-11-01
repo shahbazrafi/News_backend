@@ -209,19 +209,28 @@ describe('10. POST /api/articles/:article_id/comments', () => {
     test('return 400 and bad request with invalid input', () => {
         return request(app)
         .post("/api/articles/1/comments")
-        .send({notusername: "icellusedkars", body:"string of text"})
+        .send({body:"string of text"})
         .expect(400)
         .then(({body}) => {
-            expect(body.message).toBe("invalid new comment")
+            expect(body.message).toBe("invalid input")
         })
     });
-    test('return 404 and bad request with invalid article id', () => {
+    test('return 400 and bad request with invalid article id', () => {
         return request(app)
-        .post("/api/articles/99/comments")
+        .post("/api/articles/not-an-id/comments")
         .send({username: "icellusedkars", body:"string of text"})
+        .expect(400)
+        .then(({body}) => {
+            expect(body.message).toBe("bad request")
+        })
+    });
+    test('return 404 and bad request with invalid username', () => {
+        return request(app)
+        .post("/api/articles/1/comments")
+        .send({username: "invalidusername", body:"string of text"})
         .expect(404)
         .then(({body}) => {
-            expect(body.message).toBe("article not found")
+            expect(body.message).toBe("user does not exist")
         })
     });
 });
