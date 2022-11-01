@@ -42,25 +42,21 @@ exports.updateArticles = (article_id, body) => {
 }
 
 exports.selectArticles = (topic) => {
-    let insert = "", array = []
+    let insertWhereTopic = "", selectArticlesArray = []
     if (topic) {
-        insert = "WHERE topic = $1"
-        array.push(topic)
+        insertWhereTopic = "WHERE topic = $1"
+        selectArticlesArray.push(topic)
     }
-    return db.query(`SELECT * FROM articles ${insert} ORDER BY created_at DESC`, array)
+    return db.query(`SELECT * FROM articles ${insertWhereTopic} ORDER BY created_at DESC`, selectArticlesArray)
     .then(({rows}) => {
-        if (rows.length ===0){
-            return Promise.reject({status: 404, message: "no articles found"})
-        } else {
-            return Promise.all(rows.map((article) => {
-                return db.query(`SELECT * FROM comments WHERE article_id=$1`, [article.article_id])
-                .then(data => {
-                    article.comment_count=data.rows.length
-                })
-            }))
-            .then(() => {
-                return rows
+        return Promise.all(rows.map((article) => {
+            return db.query(`SELECT * FROM comments WHERE article_id=$1`, [article.article_id])
+            .then(data => {
+                article.comment_count=data.rows.length
             })
-        }
+        }))
+        .then(() => {
+            return rows
+        })
     })
 }

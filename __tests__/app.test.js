@@ -190,12 +190,12 @@ describe('8. get /api/articles/', () => {
             })
         })
     });
-    test('should return 404 and articles not found with invalid topic', () => {
+    test('should return 200 and no articles with invalid topic', () => {
         return request(app)
         .get("/api/articles/?topic=banana")
-        .expect(404)
+        .expect(200)
         .then(({body}) => {
-            expect(body.message).toBe("no articles found")
+            expect(body.articles.length).toBe(0)
         })
     });
 })
