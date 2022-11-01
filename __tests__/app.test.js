@@ -239,3 +239,51 @@ describe('9. GET /api/articles/:article_id/comments', () => {
         })
     });
 });
+
+describe('10. POST /api/articles/:article_id/comments', () => {
+    test('return 201 and new comment', () => {
+        return request(app)
+        .post("/api/articles/1/comments")
+        .send({username: "icellusedkars", body:"string of text"})
+        .expect(201)
+        .then(({body}) => {
+            expect(body.comment).toEqual(
+                expect.objectContaining({
+                    comment_id: expect.any(Number),
+                    body: expect.any(String),
+                    article_id: 1,
+                    author: expect.any(String),
+                    votes: 0,
+                    created_at: expect.any(String)
+                })
+            )
+        })
+    });
+    test('return 400 and bad request with invalid input', () => {
+        return request(app)
+        .post("/api/articles/1/comments")
+        .send({body:"string of text"})
+        .expect(400)
+        .then(({body}) => {
+            expect(body.message).toBe("invalid input")
+        })
+    });
+    test('return 400 and bad request with invalid article id', () => {
+        return request(app)
+        .post("/api/articles/not-an-id/comments")
+        .send({username: "icellusedkars", body:"string of text"})
+        .expect(400)
+        .then(({body}) => {
+            expect(body.message).toBe("bad request")
+        })
+    });
+    test('return 404 and bad request with invalid username', () => {
+        return request(app)
+        .post("/api/articles/1/comments")
+        .send({username: "invalidusername", body:"string of text"})
+        .expect(404)
+        .then(({body}) => {
+            expect(body.message).toBe("user does not exist")
+        })
+    });
+});

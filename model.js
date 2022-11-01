@@ -67,3 +67,15 @@ exports.selectComments = (article_id) => {
         return rows
     })
 }
+
+exports.insertComment = (article_id, comment) => {
+    if (!comment.username || !comment.body) {
+        return Promise.reject({status: 400, message: "invalid input"})
+    }
+    return db.query("SELECT * FROM users")
+    .then(({rows})=> {if (rows.every(({username})=> username!==comment.username)) return Promise.reject({status: 404, message: "user does not exist"})})
+    .then(() => db.query(`INSERT INTO comments (article_id, body, author) VALUES ($3, $1, $2) RETURNING *;`, [comment.body, comment.username, article_id])
+    .then((data) => {
+        return data.rows[0]
+    }))
+}
