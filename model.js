@@ -41,13 +41,18 @@ exports.updateArticles = (article_id, body) => {
     })
 }
 
-exports.selectArticles = (topic) => {
+exports.selectArticles = (topic, sort_by = "created_at", order = "DESC") => {
     let insertWhereTopic = "", selectArticlesArray = []
     if (topic) {
         insertWhereTopic = "WHERE topic = $1"
         selectArticlesArray.push(topic)
     }
-    return db.query(`SELECT * FROM articles ${insertWhereTopic} ORDER BY created_at DESC`, selectArticlesArray)
+    const validColumns = ['article_id', 'title', 'topic', 'author', 'body', 'created_at', 'votes', 'comment_count']
+    const validOrders = ["ASC", "DESC"]
+    if (!validColumns.includes(sort_by) || !validOrders.includes(order)){
+        return Promise.reject({status: 400, message: "invalid input"})
+    }
+    return db.query(`SELECT * FROM articles ${insertWhereTopic} ORDER BY ${sort_by} ${order}`, selectArticlesArray)
     .then(({rows}) => {
         return Promise.all(rows.map((article) => {
             return db.query(`SELECT * FROM comments WHERE article_id=$1`, [article.article_id])

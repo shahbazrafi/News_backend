@@ -287,3 +287,65 @@ describe('10. POST /api/articles/:article_id/comments', () => {
         })
     });
 });
+describe('11. GET /api/articles (queries)', () => {
+    test('returns 200 with valid sort_by input', () => {
+        return request(app)
+        .get("/api/articles/?sort_by=title")
+        .expect(200)
+        .then(({body}) => {
+            body.articles.forEach(article => {
+                expect(article).toEqual(
+                    expect.objectContaining({
+                        author: expect.any(String),
+                        title: expect.any(String),
+                        article_id: expect.any(Number),
+                        body: expect.any(String),
+                        topic: expect.any(String),
+                        created_at: expect.any(String),
+                        votes: expect.any(Number),
+                        comment_count: expect.any(Number)
+                    })
+                )
+            })
+
+        })  
+    });
+    test('returns 200 with valid sort_by input', () => {
+        return request(app)
+        .get("/api/articles/?order=ASC")
+        .expect(200)
+        .then(({body}) => {
+            body.articles.forEach(article => {
+                expect(article).toEqual(
+                    expect.objectContaining({
+                        author: expect.any(String),
+                        title: expect.any(String),
+                        article_id: expect.any(Number),
+                        body: expect.any(String),
+                        topic: expect.any(String),
+                        created_at: expect.any(String),
+                        votes: expect.any(Number),
+                        comment_count: expect.any(Number)
+                    })
+                )
+            })
+
+        })  
+    });    
+    test('returns 400 with invalid sort_by input', () => {
+        return request(app)
+        .get("/api/articles/?sort_by=banana&order=ASC")
+        .expect(400)
+        .then(({body}) => {
+            expect(body.message).toBe("invalid input")
+        })  
+    });
+    test('returns 400 with invalid order input', () => {
+        return request(app)
+        .get("/api/articles/?sort_by=title&order=banana")
+        .expect(400)
+        .then(({body}) => {
+            expect(body.message).toBe("invalid input")
+        })  
+    });
+});
