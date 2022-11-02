@@ -150,7 +150,23 @@ describe('6', () => {
 describe('12. DELETE /api/comments/:comment_id', () => {
     test('returns 204', () => {
         return request(app)
-        .delete("/api/comments/19")
+        .delete("/api/comments/1")
         .expect(204)
+    });
+    test('returns 404 for comment_id that doesnt exist yet', () => {
+        return request(app)
+        .delete("/api/comments/9999")
+        .expect(404)
+        .then(({body}) => {
+            expect(body.message).toBe("no comment_id found")
+        })
+    });
+    test('returns 400 for invalid comment_id', () => {
+        return request(app)
+        .delete("/api/comments/not-an-id")
+        .expect(400)
+        .then(({body}) => {
+            expect(body.message).toBe("bad request")
+        })
     });
 });
