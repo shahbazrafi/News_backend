@@ -9,6 +9,7 @@ app.get("/api/articles/:article_id", controller.getArticleById)
 app.get("/api/users", controller.getUsers)
 app.patch("/api/articles/:article_id", controller.patchArticles)
 app.get("/api/articles/", controller.getArticle)
+app.delete("/api/comments/:comment_id", controller.deleteComment)
 
 app.get("/api/articles/:article_id/comments", controller.getCommentsByArticleId)
 app.post("/api/articles/:article_id/comments", controller.postCommentToArticleId)
