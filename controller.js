@@ -1,4 +1,5 @@
 const model = require("./model")
+const endpoints = require("./endpoints.json");
 
 exports.getTopics = (req, res) => {
     return model.selectTopics().then(topics => {
@@ -50,4 +51,8 @@ exports.deleteComment = (req, res, next) => {
     return model.removeComment(req.params.comment_id).then(() => {
         res.status(204).send()
     }).catch(err => next(err))
+}
+
+exports.getApi = (req, res, next) => {
+    res.status(200).send(endpoints)
 }
