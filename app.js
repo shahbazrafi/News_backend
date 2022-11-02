@@ -3,6 +3,7 @@ const app = express()
 const cors = require('cors');
 const controller = require("./controller")
 app.use(express.json())
+app.use(cors());
 
 app.get("/api", controller.getApi)
 app.get("/api/topics", controller.getTopics)
@@ -15,7 +16,6 @@ app.delete("/api/comments/:comment_id", controller.deleteComment)
 app.get("/api/articles/:article_id/comments", controller.getCommentsByArticleId)
 app.post("/api/articles/:article_id/comments", controller.postCommentToArticleId)
 
-app.use(cors());
 app.use((err, req, res, next) => {
     if (err.code === "22P02") {
         res.status(400).send({message: "bad request"})
