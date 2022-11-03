@@ -163,7 +163,7 @@ describe('8. get /api/articles/', () => {
                         topic: expect.any(String),
                         created_at: expect.any(String),
                         votes: expect.any(Number),
-                        comment_count: expect.any(Number)
+                        comment_count: expect.any(String)
                     })
                 )
             })
@@ -184,7 +184,7 @@ describe('8. get /api/articles/', () => {
                         topic: "mitch",
                         created_at: expect.any(String),
                         votes: expect.any(Number),
-                        comment_count: expect.any(Number)
+                        comment_count: expect.any(String)
                     })
                 )
             })
@@ -303,7 +303,7 @@ describe('11. GET /api/articles (queries)', () => {
                         topic: expect.any(String),
                         created_at: expect.any(String),
                         votes: expect.any(Number),
-                        comment_count: expect.any(Number)
+                        comment_count: expect.any(String)
                     })
                 )
             })
@@ -325,7 +325,7 @@ describe('11. GET /api/articles (queries)', () => {
                         topic: expect.any(String),
                         created_at: expect.any(String),
                         votes: expect.any(Number),
-                        comment_count: expect.any(Number)
+                        comment_count: expect.any(String)
                     })
                 )
             })

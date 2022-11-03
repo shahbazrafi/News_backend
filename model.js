@@ -52,17 +52,10 @@ exports.selectArticles = (topic, sort_by = "created_at", order = "DESC") => {
     if (!validColumns.includes(sort_by) || !validOrders.includes(order)){
         return Promise.reject({status: 400, message: "invalid input"})
     }
-    return db.query(`SELECT * FROM articles ${insertWhereTopic} ORDER BY ${sort_by} ${order}`, selectArticlesArray)
+    return db.query(`SELECT articles.*, COUNT(comment_id) AS comment_count FROM articles JOIN comments ON articles.article_id=comments.article_id ${insertWhereTopic} GROUP BY articles.article_id ORDER BY ${sort_by} ${order}`, selectArticlesArray)
     .then(({rows}) => {
-        return Promise.all(rows.map((article) => {
-            return db.query(`SELECT * FROM comments WHERE article_id=$1`, [article.article_id])
-            .then(data => {
-                article.comment_count=data.rows.length
-            })
-        }))
-        .then(() => {
-            return rows
-        })
+        console.log(rows)
+        return rows
     })
 }
 
